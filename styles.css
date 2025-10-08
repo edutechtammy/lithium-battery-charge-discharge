@@ -1,0 +1,234 @@
+/* Battery Animation Styles */
+
+/* Unified page background */
+body {
+    background-color: #fff8e1;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+#animation_container {
+    margin: 20px auto;
+    position: relative;
+}
+
+/* Accessibility Styles */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+#accessibility-controls {
+    margin: 20px auto;
+    padding: 0;
+    background: rgba(255, 248, 225, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    max-width: 800px;
+}
+
+#accessibility-controls summary {
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+    background: #fff4cc;
+    list-style: none;
+    user-select: none;
+}
+
+#accessibility-controls summary::-webkit-details-marker {
+    display: none;
+}
+
+#accessibility-controls summary::before {
+    content: "► ";
+    margin-right: 8px;
+    transition: transform 0.2s ease;
+}
+
+#accessibility-controls[open] summary::before {
+    content: "▼ ";
+    transform: none;
+}
+
+#accessibility-controls>div {
+    padding: 20px;
+    background: white;
+    border-radius: 0 0 10px 10px;
+}
+
+#accessibility-controls fieldset {
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+#accessibility-controls legend {
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+#accessibility-controls label {
+    display: block;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+#keyboard-instructions {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#keyboard-instructions h3 {
+    margin-top: 0;
+    color: #4A90E2;
+}
+
+#keyboard-instructions ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+#keyboard-instructions li {
+    margin: 5px 0;
+}
+
+#current-state {
+    margin: 20px auto;
+    padding: 15px;
+    background: #fef9e6;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    max-width: 800px;
+    text-align: center;
+}
+
+#play-pause-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#play-pause-btn:hover {
+    background: #357ABD;
+}
+
+#play-pause-btn:active {
+    background: #2E6DA4;
+}
+
+#educational-content {
+    margin: 40px auto 20px auto;
+    max-width: 800px;
+    background: rgba(255, 248, 225, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+}
+
+#educational-content summary {
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+    background: #fff4cc;
+    list-style: none;
+    user-select: none;
+}
+
+#educational-content summary::-webkit-details-marker {
+    display: none;
+}
+
+#educational-content summary::before {
+    content: "► ";
+    margin-right: 8px;
+    transition: transform 0.2s ease;
+}
+
+#educational-content[open] summary::before {
+    content: "▼ ";
+    transform: none;
+}
+
+#educational-content>div {
+    padding: 20px;
+    background: white;
+    border-radius: 0 0 10px 10px;
+}
+
+#educational-content dl {
+    margin-top: 20px;
+}
+
+#educational-content dt {
+    font-weight: bold;
+    margin-top: 15px;
+    color: #4A90E2;
+}
+
+#educational-content dd {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    #battery-range {
+        border: 2px solid #000;
+    }
+
+    #current-state {
+        background: #000;
+        color: #fff;
+        border: 2px solid #fff;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus indicators */
+button:focus,
+input:focus,
+[tabindex]:focus,
+summary:focus {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}
+
+.hidden {
+    display: none;
+}

@@ -13,370 +13,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="authoring-tool" content="Adobe_Animate_CC">
 <title>Interactive Battery Charge and Discharge Animation</title>
+<link rel="stylesheet" href="styles.css">
 <!-- write your code here -->
-<style>
-  #animation_container {
-	position:absolute;
-	margin:auto;
-	left:0;right:0;
-	top:0;bottom:0;
-  }
-
-  /* Accessibility Styles */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  #accessibility-controls {
-    margin: 20px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    max-width: 800px;
-  }
-
-  #accessibility-controls fieldset {
-    border: 1px solid #666;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 10px 0;
-  }
-
-  #accessibility-controls legend {
-    font-weight: bold;
-    padding: 0 10px;
-  }
-
-  #accessibility-controls label {
-    display: block;
-    margin: 10px 0;
-    cursor: pointer;
-  }
-
-  #keyboard-instructions {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f0f8ff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-  }
-
-  #keyboard-instructions h3 {
-    margin-top: 0;
-    color: #4A90E2;
-  }
-
-  #keyboard-instructions ul {
-    margin: 10px 0;
-    padding-left: 20px;
-  }
-
-  #keyboard-instructions li {
-    margin: 5px 0;
-  }
-
-  #current-state {
-    margin: 20px auto;
-    padding: 15px;
-    background: #f0f8ff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    max-width: 800px;
-    text-align: center;
-  }
-
-  #animation_container {
-    margin: 20px auto;
-  }
-
-  #play-pause-btn {
-    margin-top: 15px;
-    padding: 12px 20px;
-    background: #4A90E2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  #play-pause-btn:hover {
-    background: #357ABD;
-  }
-
-  #play-pause-btn:active {
-    background: #2E6DA4;
-  }
-
-  #educational-content {
-    margin: 20px auto;
-    max-width: 800px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-  }
-
-  #educational-content summary {
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-    background: #f0f8ff;
-  }
-
-  #educational-content dl {
-    margin-top: 20px;
-  }
-
-  #educational-content dt {
-    font-weight: bold;
-    margin-top: 15px;
-    color: #4A90E2;
-  }
-
-  #educational-content dd {
-    margin-left: 20px;
-    margin-bottom: 10px;
-    line-height: 1.4;
-  }
-
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    #battery-range {
-      border: 2px solid #000;
-    }
-    
-    #current-state {
-      background: #000;
-      color: #fff;
-      border: 2px solid #fff;
-    }
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
-  /* Focus indicators */
-  button:focus, input:focus, [tabindex]:focus, summary:focus {
-    outline: 3px solid #4A90E2;
-    outline-offset: 2px;
-  }
-
-  .hidden {
-    display: none;
-  }
-</style>
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script src="Battery_WheelSlider.js?1604264336627"></script>
+<script src="accessibility.js"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 
-// Accessibility variables
-var currentFrame = 0;
-var isPlaying = false;
-var reducedMotion = false;
-
-// Make currentFrame globally accessible
-window.currentFrame = currentFrame;
-
-function updateAccessibilityInfo(frameNumber) {
-	const totalFrames = 449;
-	const percentage = Math.round((frameNumber / totalFrames) * 100);
-	const isCharging = frameNumber > 224; // Assume charging in second half
-	
-	// Update current state
-	const currentState = document.getElementById('current-state');
-	const stateDesc = document.getElementById('state-description');
-	const batteryLevel = document.getElementById('battery-level');
-	const carStatus = document.getElementById('car-status');
-	const chargingStatus = document.getElementById('charging-status');
-	
-	if (currentState) {
-		if (isCharging) {
-			currentState.textContent = `Charging phase: ${percentage}% through animation`;
-			if (stateDesc) stateDesc.textContent = `Battery is charging. Lithium ions are moving toward the anode.`;
-			if (carStatus) carStatus.textContent = `Electric car is stopped and connected to charging station.`;
-			if (chargingStatus) chargingStatus.textContent = `Charging station is active and visible.`;
-			if (batteryLevel) batteryLevel.textContent = `Battery level increasing: ${Math.round(percentage * 0.8)}% charged`;
-		} else {
-			currentState.textContent = `Discharge phase: ${percentage}% through animation`;
-			if (stateDesc) stateDesc.textContent = `Battery is discharging. Lithium ions are moving toward the cathode.`;
-			if (carStatus) carStatus.textContent = `Electric car is driving and wheels are rotating.`;
-			if (chargingStatus) chargingStatus.textContent = `No charging station visible.`;
-			if (batteryLevel) batteryLevel.textContent = `Battery level decreasing: ${Math.round(100 - (percentage * 0.7))}% charged`;
-		}
-	}
-}
-
-function setupKeyboardControls() {
-	const canvas = document.getElementById('canvas');
-	
-	if (canvas) {
-		// Add keyboard event listeners to the canvas
-		canvas.addEventListener('keydown', function(e) {
-			let newFrame = currentFrame;
-			
-			switch(e.key) {
-				case 'Home':
-					e.preventDefault();
-					newFrame = 0;
-					break;
-				case 'End':
-					e.preventDefault();
-					newFrame = 449;
-					break;
-				case ' ': // Spacebar for play/pause
-					e.preventDefault();
-					togglePlayPause();
-					return;
-				case 'ArrowLeft':
-					e.preventDefault();
-					newFrame = Math.max(0, currentFrame - 10);
-					break;
-				case 'ArrowRight':
-					e.preventDefault();
-					newFrame = Math.min(449, currentFrame + 10);
-					break;
-				default:
-					return; // Don't handle other keys
-			}
-			
-			// Update the animation frame
-			if (newFrame !== currentFrame) {
-				currentFrame = newFrame;
-				window.currentFrame = currentFrame; // Keep global sync
-				
-				if (exportRoot) {
-					exportRoot.gotoAndStop(newFrame);
-					updateAccessibilityInfo(newFrame);
-					
-					// Update the original wheel slider position and rotation
-					if (exportRoot.thumb && exportRoot.rail) {
-						const frameRatio = newFrame / 449;
-						const newX = exportRoot.railX + (frameRatio * exportRoot.railW);
-						exportRoot.thumb.x = newX;
-						const value = newFrame / 100;
-						exportRoot.thumb.rotation = value * 360;
-					}
-				}
-			}
-		});
-		
-		// Add focus and blur handlers for better UX
-		canvas.addEventListener('focus', function() {
-			this.style.outline = '3px solid #4A90E2';
-			this.style.outlineOffset = '2px';
-		});
-		
-		canvas.addEventListener('blur', function() {
-			this.style.outline = 'none';
-		});
-	}
-}
-
-function togglePlayPause() {
-	isPlaying = !isPlaying;
-	const button = document.getElementById('play-pause-btn');
-	if (button) {
-		button.textContent = isPlaying ? 'Pause Animation' : 'Play Animation';
-		button.setAttribute('aria-pressed', isPlaying.toString());
-	}
-	
-	if (isPlaying && !reducedMotion) {
-		startAutoPlay();
-	} else {
-		stopAutoPlay();
-	}
-}
-
-var autoPlayInterval;
-function startAutoPlay() {
-	if (autoPlayInterval) clearInterval(autoPlayInterval);
-	autoPlayInterval = setInterval(() => {
-		let nextFrame = (currentFrame + 1) % 450;
-		currentFrame = nextFrame;
-		window.currentFrame = currentFrame; // Keep global sync
-		
-		if (exportRoot) {
-			exportRoot.gotoAndStop(nextFrame);
-			updateAccessibilityInfo(nextFrame);
-			
-			// Update the original wheel slider position and rotation
-			if (exportRoot.thumb && exportRoot.rail) {
-				const frameRatio = nextFrame / 449;
-				const newX = exportRoot.railX + (frameRatio * exportRoot.railW);
-				exportRoot.thumb.x = newX;
-				const value = nextFrame / 100;
-				exportRoot.thumb.rotation = value * 360;
-			}
-		}
-	}, 100); // Slower than 24fps for accessibility
-}
-
-function stopAutoPlay() {
-	if (autoPlayInterval) {
-		clearInterval(autoPlayInterval);
-		autoPlayInterval = null;
-	}
-}
-
-function setupAccessibilityControls() {
-	// Reduce motion control
-	const reduceMotionCheckbox = document.getElementById('reduce-motion');
-	if (reduceMotionCheckbox) {
-		reduceMotionCheckbox.addEventListener('change', function() {
-			reducedMotion = this.checked;
-			if (reducedMotion) {
-				stopAutoPlay();
-				isPlaying = false;
-				const button = document.getElementById('play-pause-btn');
-				if (button) {
-					button.textContent = 'Play Animation';
-					button.setAttribute('aria-pressed', 'false');
-				}
-			}
-		});
-	}
-	
-	// High contrast control
-	const highContrastCheckbox = document.getElementById('high-contrast');
-	if (highContrastCheckbox) {
-		highContrastCheckbox.addEventListener('change', function() {
-			document.body.classList.toggle('high-contrast', this.checked);
-		});
-	}
-	
-	// Pause animation control
-	const pauseCheckbox = document.getElementById('pause-animation');
-	if (pauseCheckbox) {
-		pauseCheckbox.addEventListener('change', function() {
-			if (this.checked) {
-				stopAutoPlay();
-				isPlaying = false;
-			}
-		});
-	}
-}
 function init() {
 	canvas = document.getElementById("canvas");
 	anim_container = document.getElementById("animation_container");
@@ -385,6 +29,7 @@ function init() {
 	var lib_06_05_DryCells=comp.getLibrary();
 	handleComplete({},comp);
 }
+
 function handleComplete(evt,comp) {
 	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
 	var lib_06_05_DryCells=comp.getLibrary();
@@ -403,16 +48,7 @@ function handleComplete(evt,comp) {
 	fnStartAnimation();
 	
 	// Initialize accessibility features
-	setTimeout(() => {
-		setupKeyboardControls();
-		setupAccessibilityControls();
-		updateAccessibilityInfo(0);
-		
-		// Store rail properties globally for keyboard navigation
-		if (exportRoot && exportRoot.rail) {
-			window.exportRoot = exportRoot;
-		}
-	}, 500);
+	initializeAccessibility();
 }
 </script>
 <!-- write your code here -->
@@ -438,46 +74,13 @@ function handleComplete(evt,comp) {
 			</ul>
 		</div>
 
-		<!-- Accessibility Controls -->
-		<div id="accessibility-controls" role="region" aria-label="Accessibility Controls">
-			<fieldset>
-				<legend>Animation Preferences</legend>
-				<label>
-					<input type="checkbox" id="reduce-motion"> 
-					Reduce motion (disable automatic animations)
-				</label>
-				<label>
-					<input type="checkbox" id="pause-animation">
-					Pause animation
-				</label>
-				<label>
-					<input type="checkbox" id="high-contrast">
-					High contrast mode
-				</label>
-			</fieldset>
-			
-			<button id="play-pause-btn" aria-pressed="false">Play Animation</button>
-			
-			<div id="keyboard-instructions">
-				<h3>Keyboard Controls</h3>
-				<p>Click on the animation to focus, then use:</p>
-				<ul>
-					<li><strong>Arrow Left/Right:</strong> Move wheel slider backward/forward</li>
-					<li><strong>Home:</strong> Go to start of animation</li>
-					<li><strong>End:</strong> Go to end of animation</li>
-					<li><strong>Space:</strong> Play/pause animation</li>
-				</ul>
+		<!-- Educational Content -->
 			</div>
 		</div>
 
-		<!-- Current State Display -->
-		<div id="current-state" aria-live="polite" aria-atomic="true">
-			Ready to start - Discharge phase: 0% through animation
-		</div>
-
 		<!-- Canvas Animation -->
-		<div id="animation_container" style="background-color:rgba(240, 240, 240, 1.00); width:929px; height:652px">
-			<canvas id="canvas" width="929" height="652" style="position: absolute; display: block; background-color:rgba(240, 240, 240, 1.00);" 
+		<div id="animation_container" style="background-color:#fff8e1; width:929px; height:652px">
+			<canvas id="canvas" width="929" height="652" style="position: absolute; display: block; background-color:#fff8e1;" 
 					role="application" 
 					tabindex="0"
 					aria-label="Interactive battery animation with wheel slider control. Use arrow keys to control animation, space to play/pause."
@@ -487,13 +90,9 @@ function handleComplete(evt,comp) {
 			</div>
 		</div>
 
-		<!-- Detailed Description for Screen Readers -->
-		<div id="detailed-description" class="sr-only">
-			<h3>Current Animation State</h3>
-			<div id="state-description" aria-live="assertive">Ready to begin battery animation demonstration</div>
-			<div id="battery-level" aria-live="polite">Battery level: Not started</div>
-			<div id="car-status" aria-live="polite">Electric car: Ready to start</div>
-			<div id="charging-status" aria-live="polite">Charging station: Not active</div>
+		<!-- Current State Display -->
+		<div id="current-state" aria-live="polite" aria-atomic="true">
+			Ready to start - Discharge phase: 0% through animation
 		</div>
 
 		<!-- Educational Content -->
@@ -501,7 +100,7 @@ function handleComplete(evt,comp) {
 			<summary>Educational Information and Glossary</summary>
 			<div>
 				<h3>How This Animation Works</h3>
-				<p>This interactive animation shows the fundamental processes that occur inside a lithium-ion battery during charging and discharging cycles. As you move the slider, you'll see different phases of operation that correspond to how electric vehicles and portable devices use battery power.</p>
+				<p>This interactive animation shows the fundamental processes that occur inside a lithium-ion battery during charging and discharging cycles. Move the wheel on the right to explore the animation closely and see different phases of operation that correspond to how electric vehicles and portable devices use battery power.</p>
 				
 				<h3>What You'll See</h3>
 				<ul>
@@ -543,6 +142,50 @@ function handleComplete(evt,comp) {
 				</ul>
 			</div>
 		</details>
+
+		<!-- Accessibility Controls -->
+		<details id="accessibility-controls" aria-label="Accessibility Controls">
+			<summary>Accessibility</summary>
+			<div>
+				<fieldset>
+					<legend>Animation Preferences</legend>
+					<label>
+						<input type="checkbox" id="reduce-motion"> 
+						Reduce motion (disable automatic animations)
+					</label>
+					<label>
+						<input type="checkbox" id="pause-animation">
+						Pause animation
+					</label>
+					<label>
+						<input type="checkbox" id="high-contrast">
+						High contrast mode
+					</label>
+				</fieldset>
+				
+				<button id="play-pause-btn" aria-pressed="false">Play Animation</button>
+				
+				<div id="keyboard-instructions">
+					<h3>Keyboard Controls</h3>
+					<p>Click on the animation to focus, then use:</p>
+					<ul>
+						<li><strong>Arrow Left/Right:</strong> Move wheel slider backward/forward</li>
+						<li><strong>Home:</strong> Go to start of animation</li>
+						<li><strong>End:</strong> Go to end of animation</li>
+						<li><strong>Space:</strong> Play/pause animation</li>
+					</ul>
+				</div>
+			</div>
+		</details>
+
+		<!-- Detailed Description for Screen Readers -->
+		<div id="detailed-description" class="sr-only">
+			<h3>Current Animation State</h3>
+			<div id="state-description" aria-live="assertive">Ready to begin battery animation demonstration</div>
+			<div id="battery-level" aria-live="polite">Battery level: Not started</div>
+			<div id="car-status" aria-live="polite">Electric car: Ready to start</div>
+			<div id="charging-status" aria-live="polite">Charging station: Not active</div>
+		</div>
 	</main>
 </body>
 </html>
