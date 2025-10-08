@@ -257,11 +257,26 @@ Educational use permitted. Please credit the original creators when using this a
 
 ## 🤝 Contributing
 
-This project demonstrates best practices for:
+We welcome contributions that improve accessibility, educational value, or technical quality! This project demonstrates best practices for:
 - Creating accessible educational animations
 - Integrating CreateJS with modern accessibility standards
 - Designing inclusive STEM learning experiences
 - Implementing WCAG 2.1 compliance in interactive content
+
+**[📋 Read our Contributing Guide](CONTRIBUTING.md)** for detailed information on:
+- Ways to contribute (animation, accessibility, education, technical)
+- Development setup and workflow
+- Quality standards and testing requirements
+- Pull request process and review guidelines
+
+### Quick Start for Contributors
+1. **Fork** this repository
+2. **Create** a feature branch: `git checkout -b feature/your-improvement`
+3. **Follow** accessibility and educational quality standards
+4. **Test** thoroughly across browsers and assistive technologies
+5. **Submit** a pull request with detailed description
+
+All contributions must maintain **WCAG 2.1 AA accessibility compliance** and enhance the educational experience.
 
 ---
 
