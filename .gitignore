@@ -99,3 +99,6 @@ pids
 *.bak
 *.backup
 *~
+
+# Wiki content (to be manually transferred to GitHub Wiki)
+wiki-content/
