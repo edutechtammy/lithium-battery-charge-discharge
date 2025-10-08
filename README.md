@@ -1,13 +1,13 @@
 # Interactive Battery Charge and Discharge Animation
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue?style=for-the-badge)](https://yourusername.github.io/lithium-battery-charge-discharge)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue?style=for-the-badge)](https://edutechtammy.github.io/lithium-battery-charge-discharge)
 [![Accessibility](https://img.shields.io/badge/WCAG-2.1%20AA-green?style=for-the-badge)](https://www.w3.org/WAI/WCAG21/quickref/)
 
 An educational, accessible interactive animation demonstrating how lithium-ion batteries work during charging and discharging cycles. This project features a unique animated wheel slider that thematically connects to the electric vehicle animation.
 
 ## � Quick Start
 
-1. **[View Live Demo](https://yourusername.github.io/lithium-battery-charge-discharge)** (replace with your actual URL)
+1. **[View Live Demo](https://edutechtammy.github.io/lithium-battery-charge-discharge)** (will be available once GitHub Pages is enabled)
 2. **Local Usage**: Download and open `index.html` in any modern web browser
 3. **Keyboard Users**: Click the animation to focus, then use arrow keys to control
 4. **Educators**: Scroll down for educational content and glossary
@@ -85,7 +85,7 @@ This animation is fully accessible and meets **WCAG 2.1 AA standards**:
 This repository is ready for GitHub Pages deployment:
 - The main file is named `index.html` for automatic serving
 - Simply enable GitHub Pages in your repository settings
-- Your animation will be accessible at: `username.github.io/repository-name`
+- Your animation will be accessible at: `edutechtammy.github.io/lithium-battery-charge-discharge`
 
 ### Basic Interaction
 1. **Mouse Users**: Click and drag the animated wheel thumb to control the animation
