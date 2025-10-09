@@ -4,6 +4,7 @@
 var currentFrame = 0;
 var isPlaying = false;
 var reducedMotion = false;
+var hasUserInteracted = false; // Track if user has interacted with the animation
 
 // Make currentFrame globally accessible
 window.currentFrame = currentFrame;
@@ -12,6 +13,15 @@ function updateAccessibilityInfo(frameNumber) {
     const totalFrames = 449;
     const percentage = Math.round((frameNumber / totalFrames) * 100);
     const isCharging = frameNumber > 319; // Charging phase begins at 71% (319/449)
+
+    // Hide pulse indicator on first interaction
+    if (!hasUserInteracted && frameNumber !== currentFrame) {
+        hasUserInteracted = true;
+        const pulseIndicator = document.getElementById('pulse-indicator');
+        if (pulseIndicator) {
+            pulseIndicator.classList.add('hidden');
+        }
+    }
 
     // Update current state
     const currentState = document.getElementById('current-state');
@@ -35,6 +45,9 @@ function updateAccessibilityInfo(frameNumber) {
             if (batteryLevel) batteryLevel.textContent = `Battery level decreasing: ${Math.round(100 - (percentage * 0.7))}% charged`;
         }
     }
+
+    // Update current frame for next comparison
+    currentFrame = frameNumber;
 }
 
 function setupKeyboardControls() {
